@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Giriş Formu</title>
+</head>
+<body>
+    <h1>Giriş Formu</h1>
+    <form id="loginForm">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="password">Şifre:</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <input type="submit" value="Giriş Yap">
+    </form>
+
+    <div id="result"></div>
+
+
+    <script>
+
+document.addEventListener("DOMContentLoaded", function () {
+        const loginForm = document.getElementById("loginForm");
+        const resultDiv = document.getElementById("result");
+
+        loginForm.addEventListener("submit", function (event) {
+            event.preventDefault(); // Sayfanın yeniden yüklenmesini engeller
+
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                resultDiv.innerHTML = `Sunucu Cevabı: ${data.message}`;
+            })
+            .catch(error => {
+                console.error('Hata:', error);
+            });
+        });
+    });
+
+
+    </script>
+</body>
+</html>
